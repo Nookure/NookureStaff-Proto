@@ -10,4 +10,5 @@ message PlayerModel {
   google.protobuf.Timestamp firstLogin = 4;
   string lastIp = 5;
   string firstIp = 6;
+  optional bool online = 7;
 }
