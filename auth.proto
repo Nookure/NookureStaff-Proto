@@ -17,6 +17,7 @@ enum DisconnectReason {
     SERVER_SHUTDOWN = 1;
     AKKO_CLOSED = 2;
     UNKNOWN = 3;
+    NO_PERMISSION = 4;
 }
 
 // 0x09
