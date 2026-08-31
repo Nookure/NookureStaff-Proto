@@ -78,6 +78,8 @@ message ActionQueryRequest {
   optional int64 to_timestamp = 7;
   int32 page = 8;
   int32 page_size = 9;
+  optional string actor_name = 10;
+  optional string target_name = 11;
 }
 
 // 0x0C
