@@ -1,0 +1,87 @@
+syntax = "proto3";
+package com.nookure.staff.api.proto;
+
+enum ActionType {
+  ACTION_TYPE_UNKNOWN = 0;
+  STAFF_MODE_ENTER = 1;
+  STAFF_MODE_EXIT = 2;
+  STAFF_VANISH_TOGGLE = 3;
+  STAFF_FREEZE_PLAYER = 4;
+  STAFF_UNFREEZE_PLAYER = 5;
+  STAFF_INSPECT_INVENTORY = 6;
+  STAFF_TELEPORT = 7;
+  STAFF_NOTE_ADD = 8;
+  STAFF_NOTE_DELETE = 9;
+  STAFF_PIN_AUTH = 10;
+  PLAYER_LOGIN = 11;
+  PLAYER_QUIT = 12;
+  PLAYER_CHAT = 13;
+  PLAYER_COMMAND = 14;
+  PLAYER_TELEPORT = 15;
+}
+
+enum ActionCategory {
+  ACTION_CATEGORY_UNKNOWN = 0;
+  CATEGORY_STAFF = 1;
+  CATEGORY_PLAYER = 2;
+  CATEGORY_SYSTEM = 3;
+}
+
+message ActionLocation {
+  string world = 1;
+  double x = 2;
+  double y = 3;
+  double z = 4;
+}
+
+message ActionPlayer {
+  optional int64 id = 1;
+  string uuid = 2;
+  string username = 3;
+}
+
+message ActionEntry {
+  int64 id = 1;
+  optional ActionPlayer actor = 2;
+  optional ActionPlayer target = 3;
+  ActionType action_type = 4;
+  ActionCategory action_category = 5;
+  optional string server_name = 6;
+  optional ActionLocation location = 7;
+  map<string, string> metadata = 8;
+  optional string metadata_json = 9;
+  int64 created_at = 10;
+}
+
+message Pagination {
+  int32 page = 1;
+  int32 page_size = 2;
+  int32 total_pages = 3;
+  int64 total_elements = 4;
+  bool has_next = 5;
+  bool has_previous = 6;
+}
+
+// 0x0A
+message ActionNotification {
+  ActionEntry action = 1;
+}
+
+// 0x0B
+message ActionQueryRequest {
+  optional string actor_uuid = 1;
+  optional string target_uuid = 2;
+  optional ActionType action_type = 3;
+  optional ActionCategory action_category = 4;
+  optional string server_name = 5;
+  optional int64 from_timestamp = 6;
+  optional int64 to_timestamp = 7;
+  int32 page = 8;
+  int32 page_size = 9;
+}
+
+// 0x0C
+message ActionQueryResponse {
+  repeated ActionEntry actions = 1;
+  Pagination pagination = 2;
+}
