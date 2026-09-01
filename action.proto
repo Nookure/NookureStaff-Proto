@@ -18,6 +18,7 @@ enum ActionType {
   PLAYER_CHAT = 13;
   PLAYER_COMMAND = 14;
   PLAYER_TELEPORT = 15;
+  STAFF_ROLLBACK_INVENTORY = 16;
 }
 
 enum ActionCategory {
