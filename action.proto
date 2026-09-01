@@ -51,6 +51,7 @@ message ActionEntry {
   map<string, string> metadata = 8;
   optional string metadata_json = 9;
   int64 created_at = 10;
+  bool is_evidence = 11;
 }
 
 message Pagination {
@@ -80,6 +81,7 @@ message ActionQueryRequest {
   int32 page_size = 9;
   optional string actor_name = 10;
   optional string target_name = 11;
+  optional bool is_evidence = 12;
 }
 
 // 0x0C
