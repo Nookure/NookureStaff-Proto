@@ -1,0 +1,111 @@
+syntax = "proto3";
+package com.nookure.staff.api.proto;
+
+enum SnapshotReason {
+  REASON_UNKNOWN = 0;
+  DEATH = 1;
+  JOIN = 2;
+  QUIT = 3;
+  WORLD_CHANGE = 4;
+  COMMAND_CLEAR = 5;
+  STAFF_MODIFIED = 6;
+  CONTAINER_TRANSACTION = 7;
+  PERIODIC = 8;
+  CUSTOM = 9;
+}
+
+enum InventoryRestoreType {
+  RESTORE_TYPE_UNKNOWN = 0;
+  ALL = 1;
+  INVENTORY_ONLY = 2;
+  ARMOR_ONLY = 3;
+  ENDER_CHEST_ONLY = 4;
+  EXPERIENCE_ONLY = 5;
+  DROP_AT_LOCATION = 6;
+}
+
+message InventoryLocation {
+  string world = 1;
+  double x = 2;
+  double y = 3;
+  double z = 4;
+}
+
+message InventoryPlayer {
+  optional int64 id = 1;
+  string uuid = 2;
+  string username = 3;
+}
+
+message PotionEffectEntry {
+  string type = 1;
+  int32 duration = 2;
+  int32 amplifier = 3;
+  bool ambient = 4;
+  bool particles = 5;
+  bool icon = 6;
+}
+
+message InventorySnapshotEntry {
+  int64 id = 1;
+  optional InventoryPlayer player = 2;
+  string server_name = 3;
+  SnapshotReason reason = 4;
+  bytes inventory_data = 5;
+  bytes armor_data = 6;
+  bytes off_hand_data = 7;
+  bytes ender_chest_data = 8;
+  int32 exp_level = 9;
+  int32 total_exp = 10;
+  double health = 11;
+  int32 food_level = 12;
+  repeated PotionEffectEntry potion_effects = 13;
+  optional InventoryLocation location = 14;
+  int64 created_at = 15;
+  bool is_compressed = 16;
+}
+
+message InventoryPagination {
+  int32 page = 1;
+  int32 page_size = 2;
+  int32 total_pages = 3;
+  int64 total_elements = 4;
+  bool has_next = 5;
+  bool has_previous = 6;
+}
+
+// 0x0D
+message InventoryQueryRequest {
+  optional string player_uuid = 1;
+  optional string player_name = 2;
+  optional SnapshotReason reason = 3;
+  optional string server_name = 4;
+  optional int64 from_timestamp = 5;
+  optional int64 to_timestamp = 6;
+  int32 page = 7;
+  int32 page_size = 8;
+}
+
+// 0x0E
+message InventoryQueryResponse {
+  repeated InventorySnapshotEntry snapshots = 1;
+  InventoryPagination pagination = 2;
+}
+
+// 0x0F
+message InventoryRollbackRequest {
+  int64 snapshot_id = 1;
+  InventoryRestoreType restore_type = 2;
+  optional string target_player_uuid = 3;
+  optional string target_player_name = 4;
+  optional string staff_actor_uuid = 5;
+  optional string staff_actor_name = 6;
+}
+
+// 0x10
+message InventoryRollbackResponse {
+  int64 snapshot_id = 1;
+  bool success = 2;
+  optional string error_message = 3;
+  optional InventorySnapshotEntry restored_snapshot = 4;
+}
