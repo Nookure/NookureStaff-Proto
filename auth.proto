@@ -10,6 +10,12 @@ message AuthKey {
 message AuthComplete {
     string sender_username = 1;
     string sender_uuid = 2;
+    repeated string permissions = 3;
+}
+
+// 0x11
+message PermissionsUpdate {
+    repeated string permissions = 1;
 }
 
 enum DisconnectReason {
