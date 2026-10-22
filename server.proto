@@ -1,0 +1,46 @@
+syntax = "proto3";
+package com.nookure.staff.api.proto;
+
+// 0x04
+message ServerTelemetry {
+  string server_name = 1;
+  repeated float tps = 2;
+  repeated float mspt = 3;
+  repeated float memory_usage = 4;
+}
+
+message PlayerInfo {
+  string username = 1;
+  string uuid = 2;
+  optional string ip_address = 3;
+  bool is_staff = 4;
+  optional bool staff_mode = 5;
+  optional bool vanished = 6;
+}
+
+// 0x05
+message BulkPlayerInfo {
+  repeated PlayerInfo players = 1;
+}
+
+// 0x06
+message PlayerJoin {
+  PlayerInfo player = 1;
+}
+
+// 0x07
+message PlayerLeave {
+  string uuid = 1;
+}
+
+enum StaffStateUpdateType {
+  STAFF_MODE = 0;
+  VANISH = 1;
+}
+
+// 0x08
+message StaffStateUpdate {
+  string uuid = 1;
+  StaffStateUpdateType update_type = 2;
+  bool new_value = 3;
+}
