@@ -1,0 +1,86 @@
+syntax = "proto3";
+package com.nookure.staff.api.proto;
+
+import "action.proto";
+
+message PlayerSessionEntry {
+  int64 id = 1;
+  ActionPlayer player = 2;
+  int64 started_at = 3;
+  int64 ended_at = 4;
+  int64 duration_seconds = 5;
+}
+
+message OnlineSnapshotEntry {
+  int64 id = 1;
+  // If absent, refers to the proxy (Velocity)
+  optional string server_name = 2;
+  int64 recorded_at = 3;
+  int32 online_count = 4;
+}
+
+message DailyStatisticsEntry {
+  int64 id = 1;
+  // ISO-8601 date (YYYY-MM-DD)
+  string day_date = 2;
+  // If absent, refers to the proxy (Velocity)
+  optional string server_name = 3;
+  double average_players = 4;
+  int32 peak_players = 5;
+  int32 total_sessions = 6;
+  int32 unique_players = 7;
+  double average_session_duration = 8;
+  double average_sessions_per_player = 9;
+  int32 new_players = 10;
+  int64 updated_at = 11;
+}
+
+// 0x1A (Serverbound)
+message PlayerSessionQueryRequest {
+  optional string player_uuid = 1;
+  optional string player_name = 2;
+  optional int64 from_timestamp = 3;
+  optional int64 to_timestamp = 4;
+  int32 page = 5;
+  int32 page_size = 6;
+}
+
+// 0x1A (Clientbound)
+message PlayerSessionQueryResponse {
+  repeated PlayerSessionEntry sessions = 1;
+  Pagination pagination = 2;
+  int64 total_playtime_seconds = 3;
+  double average_duration_seconds = 4;
+}
+
+// 0x1B (Serverbound)
+message OnlineSnapshotQueryRequest {
+  // If server_name is absent or empty, queries proxy snapshots (serverName == null)
+  optional string server_name = 1;
+  optional int64 from_timestamp = 2;
+  optional int64 to_timestamp = 3;
+  int32 limit = 4;
+}
+
+// 0x1B (Clientbound)
+message OnlineSnapshotQueryResponse {
+  repeated OnlineSnapshotEntry snapshots = 1;
+  double average_online = 2;
+  int32 peak_online = 3;
+}
+
+// 0x1C (Serverbound)
+message DailyStatisticsQueryRequest {
+  // If server_name is absent or empty, queries proxy daily statistics (serverName == null)
+  optional string server_name = 1;
+  optional string from_date = 2;
+  optional string to_date = 3;
+  int32 page = 4;
+  int32 page_size = 5;
+}
+
+// 0x1C (Clientbound)
+message DailyStatisticsQueryResponse {
+  repeated DailyStatisticsEntry entries = 1;
+  Pagination pagination = 2;
+}
