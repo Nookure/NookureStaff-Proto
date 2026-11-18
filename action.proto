@@ -33,6 +33,9 @@ enum ActionType {
   STAFF_IP_MUTE = 28;
   PUNISHMENT_AUTO_TRIGGER = 29;
   STAFF_FREEZE_ACTION_AS_EVIDENCE = 30;
+  STAFF_ALTS_LOOKUP = 31;
+  STAFF_ALT_APPROVE = 32;
+  STAFF_ALT_UNAPPROVE = 33;
 }
 
 enum ActionCategory {
@@ -67,6 +70,7 @@ message ActionEntry {
   optional string metadata_json = 9;
   int64 created_at = 10;
   bool is_evidence = 11;
+  optional string action_type_id = 12;
 }
 
 message Pagination {
@@ -97,6 +101,7 @@ message ActionQueryRequest {
   optional string actor_name = 10;
   optional string target_name = 11;
   optional bool is_evidence = 12;
+  optional string action_type_id = 13;
 }
 
 // 0x0C
@@ -104,3 +109,18 @@ message ActionQueryResponse {
   repeated ActionEntry actions = 1;
   Pagination pagination = 2;
 }
+
+message ActionTypeDefinition {
+  string id = 1;
+  string display_name = 2;
+  ActionCategory category = 3;
+  string icon = 4;
+  string color = 5;
+  bool is_custom = 6;
+}
+
+// 0x19
+message ActionDefinitionsSync {
+  repeated ActionTypeDefinition definitions = 1;
+}
+
