@@ -9,6 +9,12 @@ message ServerTelemetry {
   repeated float memory_usage = 4;
 }
 
+// 0x1D (Clientbound)
+message ServerBranding {
+  string server_name = 1;
+  optional string server_logo_url = 2;
+}
+
 message PlayerInfo {
   string username = 1;
   string uuid = 2;
