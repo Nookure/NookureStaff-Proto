@@ -182,3 +182,13 @@ message PunishmentNotification {
   PunishmentNotificationType type = 1;
   PunishmentEntry punishment = 2;
 }
+
+message PunishmentTemplate {
+  PunishmentType type = 1;
+  string reason = 2;
+  string duration = 3;
+}
+
+message SyncPunishmentTemplates {
+  repeated PunishmentTemplate templates = 1;
+}
