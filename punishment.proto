@@ -187,8 +187,11 @@ message PunishmentTemplate {
   PunishmentType type = 1;
   string reason = 2;
   string duration = 3;
+  string key = 4;
+  string displayName = 5;
 }
 
+// 0x1E
 message SyncPunishmentTemplates {
   repeated PunishmentTemplate templates = 1;
 }
